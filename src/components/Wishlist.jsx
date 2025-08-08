@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
@@ -10,7 +10,7 @@ const Wishlist = () => {
     const fetchWishlist = async () => {
       if (!userId) return;
       try {
-        const res = await axios.get(`http://localhost:5000/api/wishlist/${userId}`);
+        const res = await axios.get(`http://13.51.235.169:5000/api/wishlist/${userId}`);
         setWishlist(res.data);
       } catch (err) {
         console.error('Error fetching wishlist:', err);
@@ -22,7 +22,7 @@ const Wishlist = () => {
 
   const handleRemove = async (productId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/wishlist/${userId}/${productId}`);
+      await axios.delete(`http://13.51.235.169:5000/api/wishlist/${userId}/${productId}`);
       setWishlist((prev) => prev.filter((item) => item.product_id !== productId));
     } catch (err) {
       console.error('Error removing item from wishlist:', err);
@@ -47,12 +47,14 @@ const Wishlist = () => {
                   className="bg-white d-flex align-items-center justify-content-center rounded-top-4"
                   style={{ height: '230px', padding: '10px' }}
                 >
+                  <Link to={`/products/${item.product_id}`}>
                   <img
                     src={item.image}
                     alt={item.title}
                     className="img-fluid"
                     style={{ maxHeight: '210px', objectFit: 'contain' }}
                   />
+                  </Link>
                 </div>
                 <div className="card-body d-flex flex-column text-center">
                   <h5 className="card-title text-truncate">{item.title}</h5>

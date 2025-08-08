@@ -33,7 +33,7 @@ const OrderSuccess = () => {
       if (!userId) return;
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/checkout/latest-order/${userId}`,
+          `http://13.51.235.169:5000/api/checkout/latest-order/${userId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 

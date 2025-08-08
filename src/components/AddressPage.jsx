@@ -38,7 +38,7 @@ const AddressPage = () => {
 
     const fetchAddresses = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/checkout/addresses/${userId}`);
+        const res = await axios.get(`http://13.51.235.169:5000/api/checkout/addresses/${userId}`);
         setAddresses(res.data);
       } catch (err) {
         console.error('Error fetching addresses:', err);
@@ -60,7 +60,7 @@ const AddressPage = () => {
   const placeOrder = async (addressToUse, method) => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/checkout/checkout',
+        'http://13.51.235.169:5000/api/checkout/checkout',
         {
           userId,
           cartItems: cart,
@@ -94,7 +94,7 @@ const AddressPage = () => {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/checkout/razorpay-order', { total });
+      const res = await axios.post('http://13.51.235.169:5000/api/checkout/razorpay-order', { total });
 
       const options = {
         key: 'rzp_test_EH1UEwLILEPXCj',
@@ -257,17 +257,18 @@ const AddressPage = () => {
           ))}
 
           {paymentMethod === 'GPay' && (
-            <div className="text-center mt-4">
-              <p>Scan this QR Code to Pay via GPay</p>
-              <QRCodeCanvas
-                value={`upi://pay?pa=divya28112003@okhdfcbank&pn=Divya&am=${total}&cu=INR`}
-                size={180}
-              />
-              <button className="btn btn-dark mt-3" onClick={() => setPaymentConfirmed(true)}>
-                ✅ I've Paid
-              </button>
-            </div>
-          )}
+  <div className="d-flex flex-column align-items-center mt-4">
+    <p className="text-center">Scan this QR Code to Pay via GPay</p>
+    <QRCodeCanvas
+      value={`upi://pay?pa=divya28112003@okhdfcbank&pn=Divya&am=${total}&cu=INR`}
+      size={180}
+    />
+    <button className="btn btn-dark mt-3" onClick={() => setPaymentConfirmed(true)}>
+      ✅ I've Paid
+    </button>
+  </div>
+)}
+
         </div>
       </div>
 

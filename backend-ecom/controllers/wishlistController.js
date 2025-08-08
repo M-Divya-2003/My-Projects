@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const db = require("../config/db");
 
 // Add to wishlist
@@ -45,7 +47,30 @@ exports.getWishlistByUser = (req, res) => {
       return res.status(500).json({ error: "Failed to fetch wishlist" });
     }
 
-    res.json(results);
+    // ✅ Convert each product image to Base64
+    const updatedResults = results.map(item => {
+      if (item.image) {
+        try {
+          // Get absolute path of image
+          const imagePath = path.resolve(__dirname, '../../public/assets', item.image);
+
+          if (fs.existsSync(imagePath)) {
+            const imgData = fs.readFileSync(imagePath);
+            const ext = path.extname(imagePath).slice(1); // e.g. "jpg", "png"
+            item.image = `data:image/${ext};base64,${imgData.toString('base64')}`;
+          } else {
+            console.warn(`⚠️ Image not found: ${imagePath}`);
+            item.image = null;
+          }
+        } catch (error) {
+          console.error('Error converting wishlist image to Base64:', error);
+          item.image = null;
+        }
+      }
+      return item;
+    });
+
+    res.json(updatedResults);
   });
 };
 

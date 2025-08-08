@@ -15,7 +15,7 @@ const Navbar = () => {
     const fetchProfile = async () => {
       if (!userId) return;
       try {
-        const res = await axios.get(`http://localhost:5000/api/profile/${userId}`);
+        const res = await axios.get(`http://13.51.235.169:5000/api/profile/${userId}`);
         setProfile(res.data);
       } catch (err) {
         console.error('Error fetching profile:', err);
@@ -80,27 +80,27 @@ const Navbar = () => {
             </NavLink>
 
             <NavLink to="/orders" className="btn btn-outline-dark btn-sm">
-              My Orders
+              📦 My Orders
             </NavLink>
 
             <NavLink to="/wishlist" className="btn btn-outline-dark btn-sm">
-              wishlist
+              💖 wishlist
             </NavLink>
 
-            <button onClick={handleLogout} className="btn btn-outline-dark btn-sm">
+            <button onClick={handleLogout} className="btn btn-outline-danger btn-sm">
               Logout
             </button>
 
             <NavLink to="/profile" className="ms-2">
               <img
                 src={
-                  profile?.profile_image
-                    ? `http://localhost:5000${profile.profile_image}`
-                    : '/assets/default.png'
-                }
+    profile?.profile_image
+      ? profile.profile_image     // ✅ Base64 string directly
+      : '/assets/default.png'
+  }
                 alt="Profile"
                 className="rounded-circle border border-dark"
-                style={{ width: '45px', height: '45px', objectFit: 'cover' }}
+                style={{ width: '70px', height: '70px', objectFit: 'cover' }}
               />
             </NavLink>
           </div>

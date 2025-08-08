@@ -15,17 +15,13 @@ const Profile = () => {
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await axios.get(`http://localhost:5000/api/profile/${userId}`);
-        setProfile(res.data);
-      } catch (err) {
-        console.error('Failed to fetch profile', err);
-      }
-    };
-
-    fetchProfile();
-  }, [userId]);
+  fetch(`http://13.51.235.169:5000/api/profile/${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log("PROFILE DATA:", data);
+      setProfile(data);
+    });
+}, []);
 
   const handleChange = (e) => {
     setProfile({ ...profile, [e.target.name]: e.target.value });
@@ -45,7 +41,7 @@ const Profile = () => {
     if (selectedFile) formData.append('profile_image', selectedFile);
 
     try {
-      await axios.put(`http://localhost:5000/api/profile/${userId}`, formData, {
+      await axios.put(`http://13.51.235.169:5000/api/profile/${userId}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       alert('Profile updated successfully');
@@ -61,17 +57,16 @@ const Profile = () => {
       <div className="card p-4 shadow-lg mx-auto" style={{ maxWidth: '600px' }}>
         <div className="d-flex flex-column align-items-center mb-4">
           <img
-            src={
-              selectedFile
-                ? URL.createObjectURL(selectedFile)
-                : profile.profile_image
-                ? `http://localhost:5000${profile.profile_image}`
-                : '../assets/default.png'
-            }
-            alt="Profile"
-            className="rounded-circle mb-2"
-            style={{ width: '120px', height: '120px', objectFit: 'cover' }}
-          />
+  src={
+    profile?.profile_image
+      ? profile.profile_image     // ✅ Base64 string directly
+      : '/assets/default.png'
+  }
+  alt="Profile"
+  className="rounded-circle border border-dark"
+  style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+/>
+
           {editing && (
             <input type="file" onChange={handleFileChange} className="form-control mt-2 w-75" />
           )}

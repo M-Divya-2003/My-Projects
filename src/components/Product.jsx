@@ -12,7 +12,7 @@ const Product = () => {
     const getProduct = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const response = await axios.get(`http://13.51.235.169:5000/api/products/${id}`);
         setProduct(response.data);
         setLoading(false);
       } catch (err) {
@@ -25,22 +25,24 @@ const Product = () => {
   }, [id]);
 
   const handleAddToCart = async () => {
-    if (!userId) {
-      alert('Please log in to add items to cart.');
-      return;
-    }
+  if (!userId) {
+    alert('Please log in to add items to cart.');
+    return;
+  }
 
-    try {
-      await axios.post('http://localhost:5000/api/cart/add', {
-        userId,
-        productId: product.id,
-      });
-      alert('Product added to cart!');
-    } catch (err) {
-      console.error('Error adding product to cart:', err);
-      alert('Failed to add product to cart');
-    }
-  };
+  try {
+    const res = await axios.post('http://13.51.235.169:5000/api/cart/add', {
+      userId,
+      productId: product.id,
+    });
+    console.log('✅ Cart Response:', res.data);
+    alert('Product added to cart!');
+  } catch (err) {
+    console.error('❌ Error adding product to cart:', err.response ? err.response.data : err.message);
+    alert(`Failed to add product to cart: ${err.response ? err.response.data.error : err.message}`);
+  }
+};
+
 
   const Loading = () => <div>Loading...</div>;
 

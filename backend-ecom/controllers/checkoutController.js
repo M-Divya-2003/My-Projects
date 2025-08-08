@@ -112,7 +112,7 @@ const placeOrder = (req, res) => {
       Promise.all(updateStockPromises)
   .then(() => {
     // ✅ Clear cart
-    const clearCartQuery = `DELETE FROM cart WHERE user_id = ?`;
+    const clearCartQuery = `DELETE FROM cart_items WHERE user_id = ?`;
     db.query(clearCartQuery, [userId], (err) => {
       if (err) {
         console.error('Error clearing cart:', err);

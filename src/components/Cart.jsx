@@ -13,7 +13,7 @@ const Cart = () => {
     const fetchCart = async () => {
       if (!userId) return;
       try {
-        const res = await axios.get(`http://localhost:5000/api/cart/${userId}`);
+        const res = await axios.get(`http://13.51.235.169:5000/api/cart/${userId}`);
         setCartItems(res.data);
         dispatch(setCart(res.data));
       } catch (err) {
@@ -30,7 +30,7 @@ const Cart = () => {
     }
 
     try {
-      await axios.post(`http://localhost:5000/api/cart/add`, { userId, productId: product.id });
+      await axios.post(`http://13.51.235.169:5000/api/cart/add`, { userId, productId: product.id });
       setCartItems(prev =>
         prev.map(item =>
           item.id === product.id ? { ...item, qty: item.qty + 1 } : item
@@ -43,7 +43,7 @@ const Cart = () => {
 
   const handleDel = async (product) => {
     try {
-      await axios.post(`http://localhost:5000/api/cart/remove`, { userId, productId: product.id });
+      await axios.post(`http://13.51.235.169:5000/api/cart/remove`, { userId, productId: product.id });
       setCartItems(prev =>
         prev
           .map(item =>

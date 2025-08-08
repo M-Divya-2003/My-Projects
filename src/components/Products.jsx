@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import axios from "axios";
 
 const Products = () => {
@@ -14,7 +14,7 @@ const Products = () => {
     const getProducts = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:5000/api/products");
+        const response = await fetch("http://13.51.235.169:5000/api/products");
         const products = await response.json();
         if (isMounted) {
           setData(products);
@@ -36,7 +36,7 @@ const Products = () => {
     const fetchWishlist = async () => {
       if (!userId) return;
       try {
-        const res = await axios.get(`http://localhost:5000/api/wishlist/${userId}`);
+        const res = await axios.get(`http://13.51.235.169:5000/api/wishlist/${userId}`);
         const wishlistProductIds = res.data.map(item => item.product_id);
         setWishlist(wishlistProductIds);
       } catch (err) {
@@ -50,7 +50,7 @@ const Products = () => {
     if (wishlist.includes(productId)) return;
     setWishlist((prev) => [...prev, productId]);
     try {
-      await axios.post("http://localhost:5000/api/wishlist", {
+      await axios.post("http://13.51.235.169:5000/api/wishlist", {
         userId,
         productId,
       });
@@ -88,12 +88,14 @@ const Products = () => {
           <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" key={product.id}>
             <div className="card h-100 shadow-sm">
               <div className="d-flex justify-content-center align-items-center bg-white" style={{ height: "250px" }}>
+                <Link to={`/products/${product.id}`}>
                 <img
                   className="img-fluid"
                   src={product.image_url}
                   alt={product.name}
                   style={{ maxHeight: '210px', objectFit: "contain" }}
                 />
+                </Link>
               </div>
               <div className="card-body d-flex flex-column text-center">
                 <h5 className="card-title mb-2 text-truncate">{product.name}</h5>
@@ -106,7 +108,7 @@ const Products = () => {
                     className={`btn btn-sm w-50 ${wishlist.includes(product.id) ? "btn-danger" : "btn-outline-danger"}`}
                     onClick={() => handleAddToWishlist(product.id)}
                   >
-                    {wishlist.includes(product.id) ? "❤️ Added" : "🤍 Wishlist"}
+                    {wishlist.includes(product.id) ? "❤️" : "🤍"}
                   </button>
                 </div>
               </div>

@@ -8,9 +8,8 @@ const OrderHistory = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       if (!userId) return;
-
       try {
-        const res = await axios.get(`http://localhost:5000/api/orders/${userId}`);
+        const res = await axios.get(`http://13.51.235.169:5000/api/orders/${userId}`);
         setOrders(res.data); // Backend should return orders with `items` array
       } catch (err) {
         console.error('Failed to load order history:', err);

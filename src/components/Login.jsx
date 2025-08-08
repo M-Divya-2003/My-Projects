@@ -14,7 +14,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', form);
+      const res = await axios.post('http://13.51.235.169:5000/api/auth/login', form);
       const { token } = res.data;
       localStorage.setItem('token', token);
 
